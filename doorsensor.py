@@ -35,6 +35,7 @@ FREQUENCY = 2
 detected = 0
 notified = 0
 spaceIsOpen = False
+firstLoop = True
 
 wiringpi2.pinMode(DOOR_PIN, INPUT)
 wiringpi2.pullUpDnControl(DOOR_PIN, PUD_UP)
@@ -68,12 +69,15 @@ while True:
     if not wiringpi2.digitalRead(SPACE_PIN):
         if not spaceIsOpen:
             spaceIsOpen = True
-            smib("The space is now open - come join us!")
-            say("the space is open")
+            if not firstLoop:
+                smib("The space is now open - come join us!")
+                say("the space is open")
     else:
         if spaceIsOpen:
             spaceIsOpen = False
-            smib("The space is now closed - see you next time!")
-            say("the space is closed")
+            if not firstLoop:
+                smib("The space is now closed - see you next time!")
+                say("the space is closed")
 
+    firstLoop = False
     sleep(1.0/FREQUENCY)
