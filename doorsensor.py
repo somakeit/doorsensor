@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import signal
+import shlex
 import subprocess
 import wiringpi2
 from time import time, sleep
@@ -31,9 +32,16 @@ FREQUENCY = 2
 # Global variables
 detected = 0
 notified = 0
+spaceIsOpen = False
 
 wiringpi2.pinMode(DOOR_PIN, INPUT)
 wiringpi2.pullUpDnControl(DOOR_PIN, PUD_UP)
+
+def say(msg):
+    msg = "beep "+msg
+    command = "echo {} | festival --tts".format(shlex.quote(msg))
+    cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+    cmd.wait()
 
 while True:
     if not wiringpi2.digitalRead(DOOR_PIN):
@@ -41,9 +49,7 @@ while True:
         if time() - notified > 30:
             notified = time()
             print("DOOR IS OPEN")
-            command = "echo 'beep the door is open' | festival --tts"
-            cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
-            cmd.wait()
+            say("the door is open")
     else:
         # Reset
         notified = 0
