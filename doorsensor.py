@@ -52,6 +52,7 @@ def smib(msg):
     cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
     cmd.wait()
 
+smib("Door sensor script started.")
 while True:
     if not wiringpi2.digitalRead(DOOR_PIN):
         detected = time()
