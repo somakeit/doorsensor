@@ -25,6 +25,8 @@ wiringpi2.wiringPiSetup()
 
 # Switch on wiring pi pin 4 (GPIO 23)
 DOOR_PIN = 4
+# Switch on wiring pi pin 0 (GPIO 17)
+SPACE_PIN = 0
 
 # How many times per second should we read the GPIO?
 FREQUENCY = 2
@@ -36,6 +38,8 @@ spaceIsOpen = False
 
 wiringpi2.pinMode(DOOR_PIN, INPUT)
 wiringpi2.pullUpDnControl(DOOR_PIN, PUD_UP)
+wiringpi2.pinMode(SPACE_PIN, INPUT)
+wiringpi2.pullUpDnControl(SPACE_PIN, PUD_UP)
 
 def say(msg):
     msg = "beep "+msg
@@ -49,9 +53,19 @@ while True:
         if time() - notified > 30:
             notified = time()
             print("DOOR IS OPEN")
-            say("the door is open")
+            if spaceIsOpen:
+                say("the door is open")
     else:
         # Reset
         notified = 0
+
+    if not wiringpi2.digitalRead(SPACE_PIN):
+        if not spaceIsOpen:
+            spaceIsOpen = True
+            say("the space is open")
+    else:
+        if spaceIsOpen:
+            spaceIsOpen = False
+            say("the space is closed")
 
     sleep(1.0/FREQUENCY)
