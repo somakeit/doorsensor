@@ -23,7 +23,7 @@ PUD_UP = 2
 wiringpi2.wiringPiSetup()
 
 # Switch on wiring pi pin 4 (GPIO 23)
-PIN = 4
+DOOR_PIN = 4
 
 # How many times per second should we read the GPIO?
 FREQUENCY = 2
@@ -32,11 +32,11 @@ FREQUENCY = 2
 detected = 0
 notified = 0
 
-wiringpi2.pinMode(PIN, INPUT)
-wiringpi2.pullUpDnControl(PIN, PUD_UP)
+wiringpi2.pinMode(DOOR_PIN, INPUT)
+wiringpi2.pullUpDnControl(DOOR_PIN, PUD_UP)
 
 while True:
-    if not wiringpi2.digitalRead(PIN):
+    if not wiringpi2.digitalRead(DOOR_PIN):
         detected = time()
         if time() - notified > 30:
             notified = time()
