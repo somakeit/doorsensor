@@ -36,16 +36,16 @@ wiringpi2.pinMode(PIN, INPUT)
 wiringpi2.pullUpDnControl(PIN, PUD_UP)
 
 while True:
-  if not wiringpi2.digitalRead(PIN):
-    detected = time()
-    if time() - notified > 30:
-      notified = time()
-      print("DOOR IS OPEN")
-      command = "echo 'beep the door is open' | festival --tts"
-      cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
-      cmd.wait()
-  else:
-    # Reset
-    notified = 0
+    if not wiringpi2.digitalRead(PIN):
+        detected = time()
+        if time() - notified > 30:
+            notified = time()
+            print("DOOR IS OPEN")
+            command = "echo 'beep the door is open' | festival --tts"
+            cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+            cmd.wait()
+    else:
+        # Reset
+        notified = 0
 
-  sleep(1.0/FREQUENCY)
+    sleep(1.0/FREQUENCY)
