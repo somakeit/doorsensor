@@ -47,6 +47,11 @@ def say(msg):
     cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
     cmd.wait()
 
+def smib(msg):
+    command = "echo {} | nc localhost 1337".format(shlex.quote(msg))
+    cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+    cmd.wait()
+
 while True:
     if not wiringpi2.digitalRead(DOOR_PIN):
         detected = time()
@@ -62,10 +67,12 @@ while True:
     if not wiringpi2.digitalRead(SPACE_PIN):
         if not spaceIsOpen:
             spaceIsOpen = True
+            smib("The space is now open - come join us!")
             say("the space is open")
     else:
         if spaceIsOpen:
             spaceIsOpen = False
+            smib("The space is now closed - see you next time!")
             say("the space is closed")
 
     sleep(1.0/FREQUENCY)
