@@ -36,7 +36,7 @@ wiringpi2.pinMode(PIN, INPUT)
 wiringpi2.pullUpDnControl(PIN, PUD_UP)
 
 while True:
-  if !wiringpi2.digitalRead(PIN):
+  if not wiringpi2.digitalRead(PIN):
     detected = time()
     if time() - notified > 30:
       notified = time()
