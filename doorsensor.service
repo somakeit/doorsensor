@@ -1,0 +1,11 @@
+[Unit]
+Description=Door sensor
+
+[Service]
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/vc/bin
+Type=simple
+ExecStart=/home/benjie/doorsensor/doorsensor.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
