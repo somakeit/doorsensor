@@ -43,7 +43,6 @@ wiringpi2.pinMode(SPACE_PIN, INPUT)
 wiringpi2.pullUpDnControl(SPACE_PIN, PUD_UP)
 
 def say(msg):
-    msg = "beep "+msg
     command = "echo {} | festival --tts".format(shlex.quote(msg))
     cmd = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
     cmd.wait()
@@ -71,7 +70,7 @@ while True:
             spaceIsOpen = True
             if not firstLoop:
                 smib("The space is now open - come join us!")
-                say("the space is open")
+                say("The space is open, unlock the fire escape.")
     else:
         if spaceIsOpen:
             spaceIsOpen = False
