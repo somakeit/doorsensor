@@ -36,6 +36,7 @@ detected = 0
 notified = 0
 spaceIsOpen = False
 firstLoop = True
+still = ""
 
 wiringpi2.pinMode(DOOR_PIN, INPUT)
 wiringpi2.pullUpDnControl(DOOR_PIN, PUD_UP)
@@ -60,10 +61,12 @@ while True:
             notified = time()
             print("DOOR IS OPEN")
             if spaceIsOpen:
-                say("the door is open")
+                say("the door is " + still + "open")
+                still = "still "
     else:
         # Reset
         notified = 0
+        still = ""
 
     if not wiringpi2.digitalRead(SPACE_PIN):
         if not spaceIsOpen:
